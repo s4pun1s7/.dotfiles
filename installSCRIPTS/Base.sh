@@ -12,6 +12,6 @@ apt-get install -y i3 fish thefuck stow tty-clock dunst conky dmenu mc htop rxvt
 
 cd
 
-stow -v .dotfiles
+git clone https://github.com/fokditkak/.dotfiles .config
 
 echo 'no errors'
