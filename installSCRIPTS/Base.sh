@@ -4,7 +4,7 @@ apt-get update -y
 
 add-apt-repository -y ppa:aguignard/ppa
 
-apt-get update
+apt-get update -y
 
 apt-get upgrade -y
 
@@ -14,4 +14,6 @@ cd
 
 git clone https://github.com/fokditkak/.dotfiles .config
 
-echo 'no errors'
+echo 'no errors, executing i3gaps install...\n'
+
+./.config/installSCRIPTS/i3GAPS.sh

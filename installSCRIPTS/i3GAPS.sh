@@ -19,3 +19,7 @@ cd build/
 make 
 
 sudo make install 
+
+echo 'rebooting, thank you for your patience'
+
+reboot
