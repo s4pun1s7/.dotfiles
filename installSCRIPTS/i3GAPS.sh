@@ -20,6 +20,8 @@ make
 
 sudo make install 
 
+cd dotfiles
+
 echo 'rebooting, thank you for your patience'
 
 reboot

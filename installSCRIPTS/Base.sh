@@ -8,11 +8,11 @@ apt-get update -y
 
 apt-get upgrade -y
 
-apt-get install -y i3 fish thefuck stow tty-clock dunst conky dmenu mc htop rxvt-unicode tmux fonts-font-awesome unrar feh xbacklight screenfetch git qbittorrent compton vlc guake rofi chromium-browser screengrab libxcb1-dev libxcb-keysyms1-dev libpango1.0-dev libxcb-util0-dev libxcb-icccm4-dev libyajl-dev libstartup-notification0-dev libxcb-randr0-dev libev-dev libxcb-cursor-dev libxcb-xinerama0-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev autoconf libxcb-xrm-dev  
+apt-get install -y i3 vim fish thefuck stow tty-clock dunst conky dmenu mc htop rxvt-unicode tmux fonts-font-awesome unrar feh xbacklight screenfetch git qbittorrent compton vlc guake rofi chromium-browser screengrab libxcb1-dev libxcb-keysyms1-dev libpango1.0-dev libxcb-util0-dev libxcb-icccm4-dev libyajl-dev libstartup-notification0-dev libxcb-randr0-dev libev-dev libxcb-cursor-dev libxcb-xinerama0-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev autoconf libxcb-xrm-dev  
 
 cd
 
-git clone https://github.com/fokditkak/.dotfiles .config
+git clone https://github.com/fokditkak/.dotfiles dotfiles
 
 echo 'no errors, executing i3gaps install...\n'
 
