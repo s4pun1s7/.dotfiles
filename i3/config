@@ -186,7 +186,7 @@ bindsym $mod+r mode "resize"
 # finds out, if available)
 bar {
         position top
-	status_command i3status -c ~/.dotfiles/i3/i3status.conf
+	status_command i3status -c ~/dotfiles/i3/i3status.conf
 	height 13 
 	colors {
 		statusline	#A6A6A6
@@ -203,11 +203,11 @@ bar {
 # Random assignments, borders, start-ups
 new_window pixel 1
 hide_edge_borders none
-exec --no-startup-id compton --config ~/.dotfiles/compton/compton.conf
+exec --no-startup-id compton --config ~/dotfiles/compton/compton.conf
 exec_always --no-startup-id feh --bg-scale -z ~/Pictures/
 exec --no-startup-id guake
 #exec --no-startup-id conky -c ~/.config/conky/conkyrc
-exec_always --no-startup-id dunst -config ~/.dotfiles/dunst/dunstrc
+exec_always --no-startup-id dunst -config ~/dotfiles/dunst/dunstrc
 #exec --no-startup-id knotes
 #assign [class="knotes"] $workspace7
 #assign [class="skypeforlinux"] $workspace9
