@@ -12,8 +12,14 @@ apt-get install -y i3 vim fish thefuck stow tty-clock dunst conky dmenu mc htop 
 
 cd
 
+apt remove unity 
+
 git clone https://github.com/fokditkak/.dotfiles dotfiles
+
+cd dotfiles
+
+stow bash && stow X11
 
 echo 'no errors, executing i3gaps install...\n'
 
-./.config/installSCRIPTS/i3GAPS.sh
+./dotfiles/installSCRIPTS/i3GAPS.sh

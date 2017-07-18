@@ -2,9 +2,9 @@
 
 cd
 
-git clone https://www.github.com/Airblader/i3 i3-gaps
+git clone https://www.github.com/Airblader/i3 i3gaps
 
-cd i3-gaps
+cd i3gaps
 
 autoreconf --force --install
 
@@ -19,8 +19,6 @@ cd build/
 make 
 
 sudo make install 
-
-cd dotfiles
 
 echo 'rebooting, thank you for your patience'
 
