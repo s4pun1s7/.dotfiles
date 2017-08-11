@@ -7,6 +7,8 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+toilet hi fuckface
+
 #                                   Settings
 
 # TERMCAP Setup
@@ -46,26 +48,6 @@ __prompt_command() {
         PS1+="\e[31m\$ \e[0m";
     fi
 }
-
-#                                    Binds
-
-# Fancy commands output
-alias ls='els --els-icons=fontawesome'
-alias la='els -laH --els-icons=fontawesome'
-alias du='du -kh'
-alias df='df -kTh'
-alias grep='grep --color=auto'
-alias mkdir='mkdir --parents'
-alias free='free -h'
-alias less='less -r'
-# Upagrade distro
-alias upgradearch='sudo pacman -Syy && yaourt -Syua --noconfirm'
-# Load configs for bash and nvim
-alias settings='nvim -O ~/.bashrc ~/.config/nvim/init.vim'
-# Load configs for i3 and polybar
-alias settingswm='nvim -O ~/.config/i3/config ~/.config/polybar/config'
-# Get current IP
-alias myip="curl http://ipecho.net/plain; echo"
 
 #                                   Functions
 
