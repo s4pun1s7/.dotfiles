@@ -1,5 +1,12 @@
 # .dotfiles
-configurations
+These are my configs for my workspace.
 
- They are basically ready templates I've found throughout the Internet. I have modded them to suit my needs and to always have ready configs whenever I switch distros or just plain preinstall.
- 
+The i3 configs I use with swaywm. It is a little buggy.
+
+For my school projects I use VIM with Vundle including:
+
+	c.vim and NERTDTree
+
+
+
+P.S. I am still learning so there will be changes (I hope perpetual)
