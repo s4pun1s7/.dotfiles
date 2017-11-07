@@ -1,82 +1,67 @@
-#                       ██████   █████  ███████ ██   ██
-#                       ██   ██ ██   ██ ██      ██   ██
-#                       ██████  ███████ ███████ ███████
-#                       ██   ██ ██   ██      ██ ██   ██
-#                       ██████  ██   ██ ███████ ██   ██
-
+#
+# ~/.bashrc
+#
+neofetch
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
+# Aliases 
 
-toilet hi fuckface
+alias ll='ls -al --color=auto'
+alias bashrc='sudo vim ~/.bashrc'
+alias vimrc='sudo vim /etc/vimrc'
+alias swayconf='vim ~/.config/i3/config'
+alias pacadd='sudo pacman -Sy'
+alias pacrm='sudo pacman -Rs'
+alias pacSs='sudo pacman -Ss'
+alias pacup='sudo pacman -Syu'
+alias updatedb='sudo updatedb'
 
-#                                   Settings
-
-# TERMCAP Setup
-# enter blinking mode - red
-export LESS_TERMCAP_mb=$(printf '\e[01;31m')
-# enter double-bright mode - bold, magenta
-export LESS_TERMCAP_md=$(printf '\e[01;35m')
-# turn off all appearance modes (mb, md, so, us)
-export LESS_TERMCAP_me=$(printf '\e[0m')
-# leave standout mode
-export LESS_TERMCAP_se=$(printf '\e[0m')
-# enter standout mode - green
-export LESS_TERMCAP_so=$(printf '\e[01;32m')
-# leave underline mode
-export LESS_TERMCAP_ue=$(printf '\e[0m')
-# enter underline mode - blue
-export LESS_TERMCAP_us=$(printf '\e[04;34m')
-
-# Add custom enviroment
-PATH=$PATH:~/Scripts
-
-# PS1 Setup
-PROMPT_COMMAND=__prompt_command
-
-__prompt_command() {
-    local EXITCODE="$?"
-
-    local HOSTCOLOR="5"
-    local USERCOLOR="3"
-    local PATHCOLOR="4"
-
-    PS1="\e[3${HOSTCOLOR}m \h > \e[3${USERCOLOR}m \u > \e[3${PATHCOLOR}m \w > \n";
-
-    if [ $EXITCODE == 0 ]; then
-        PS1+="\e[32m\$ \e[0m";
-    else
-        PS1+="\e[31m\$ \e[0m";
-    fi
+#PS1='[\u@\h \W]\$ '
+# get current branch in git repo
+function parse_git_branch() {
+	BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+	if [ ! "${BRANCH}" == "" ]
+	then
+		STAT=`parse_git_dirty`
+		echo "[${BRANCH}${STAT}]"
+	else
+		echo ""
+	fi
 }
 
-#                                   Functions
-
-# Extract archive
-function extract {
-    if [ -z "$1" ]; then
-        echo "Usage: extract <path/file_name>.<zip|rar|bz2|gz|tar|tbz2|tgz|Z|7z|xz|ex|tar.bz2|tar.gz|tar.xz>"
-    else
-        if [ -f $1 ] ; then
-            case $1 in
-                *.tar.bz2)   tar xvjf ./$1    ;;
-                *.tar.gz)    tar xvzf ./$1    ;;
-                *.tar.xz)    tar xvJf ./$1    ;;
-                *.lzma)      unlzma ./$1      ;;
-                *.bz2)       bunzip2 ./$1     ;;
-                *.rar)       unrar x -ad ./$1 ;;
-                *.gz)        gunzip ./$1      ;;
-                *.tar)       tar xvf ./$1     ;;
-                *.tbz2)      tar xvjf ./$1    ;;
-                *.tgz)       tar xvzf ./$1    ;;
-                *.zip)       unzip ./$1       ;;
-                *.Z)         uncompress ./$1  ;;
-                *.7z)        7z x ./$1        ;;
-                *.xz)        unxz ./$1        ;;
-                *.exe)       cabextract ./$1  ;;
-                *)           echo "extract: '$1' - unknown archive method" ;;
-            esac
-        else
-            echo "$1 - file does not exist"
-        fi
-    fi
+# get current status of git repo
+function parse_git_dirty {
+	status=`git status 2>&1 | tee`
+	dirty=`echo -n "${status}" 2> /dev/null | grep "modified:" &> /dev/null; echo "$?"`
+	untracked=`echo -n "${status}" 2> /dev/null | grep "Untracked files" &> /dev/null; echo "$?"`
+	ahead=`echo -n "${status}" 2> /dev/null | grep "Your branch is ahead of" &> /dev/null; echo "$?"`
+	newfile=`echo -n "${status}" 2> /dev/null | grep "new file:" &> /dev/null; echo "$?"`
+	renamed=`echo -n "${status}" 2> /dev/null | grep "renamed:" &> /dev/null; echo "$?"`
+	deleted=`echo -n "${status}" 2> /dev/null | grep "deleted:" &> /dev/null; echo "$?"`
+	bits=''
+	if [ "${renamed}" == "0" ]; then
+		bits=">${bits}"
+	fi
+	if [ "${ahead}" == "0" ]; then
+		bits="*${bits}"
+	fi
+	if [ "${newfile}" == "0" ]; then
+		bits="+${bits}"
+	fi
+	if [ "${untracked}" == "0" ]; then
+		bits="?${bits}"
+	fi
+	if [ "${deleted}" == "0" ]; then
+		bits="x${bits}"
+	fi
+	if [ "${dirty}" == "0" ]; then
+		bits="!${bits}"
+	fi
+	if [ ! "${bits}" == "" ]; then
+		echo " ${bits}"
+	else
+		echo ""
+	fi
 }
+
+export PS1="\[\e[33m\]\h\[\e[m\]\[\e[34m\]\w\[\e[m\]:\`parse_git_branch\`\[\n\[\e[32m\]\u\[\e[m\]\[\e[32m\] $\[\e[m\] "
