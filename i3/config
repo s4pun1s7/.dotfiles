@@ -264,4 +264,3 @@ mode "$mode_gaps_outer" {
 }
 gaps inner 2
 gaps outer 2
-smart_gaps on
