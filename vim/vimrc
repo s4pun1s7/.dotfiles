@@ -1,0 +1,70 @@
+" All system-wide defaults are set in $VIMRUNTIME/archlinux.vim (usually just
+" /usr/share/vim/vimfiles/archlinux.vim) and sourced by the call to :runtime
+" you can find below.  If you wish to change any of those settings, you should
+" do it in this file (/etc/vimrc), since archlinux.vim will be overwritten
+" everytime an upgrade of the vim packages is performed.  It is recommended to
+" make changes after sourcing archlinux.vim since it alters the value of the
+" 'compatible' option.
+
+" This line should not be removed as it ensures that various options are
+" properly set to work with the Vim-related packages.
+runtime! archlinux.vim
+
+" If you prefer the old-style vim functionalty, add 'runtime! vimrc_example.vim'
+" Or better yet, read /usr/share/vim/vim80/vimrc_example.vim or the vim manual
+" and configure vim to your own liking!
+
+" do not load defaults if ~/.vimrc is missing
+"let skip_defaults_vim=1
+" Set stuffs
+
+set path+=**
+set wildmenu
+set nu
+set relativenumber
+set nocompatible
+set laststatus=2
+set exrc
+set secure
+filetype off
+set rtp+=/home/junk/.vim/bundle/Vundle.vim
+syntax on
+set tabstop=4
+set smarttab
+set shiftwidth=4
+
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'vim-scripts/c.vim'
+Plugin 'scrooloose/nerdtree'
+
+call vundle#end()
+filetype plugin indent on
+
+" Mappings
+map <C-n> :NERDTreeToggle<CR>
+nnoremap ,html :1read/home/junk/Documents/skeletons/skeleton.html<CR>3jwf>a
+nnoremap ,p5js :1read/home/junk/Documents/skeletons/skeleton.p5js<CR>
+nnoremap ,cpp :1read/home/junk/Documents/skeletons/skeleton.cpp<CR>
+
+
+" NERDTREE Highlights
+function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+ exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+ exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+endfunction
+
+call NERDTreeHighlightFile('jade', 'green', 'none', 'green', '#151515')
+call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('md', 'blue', 'none', '#3366FF', '#151515')
+call NERDTreeHighlightFile('yml', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('config', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('conf', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('html', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('styl', 'cyan', 'none', 'cyan', '#151515')
+call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
+call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
+call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
+call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
