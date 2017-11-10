@@ -204,7 +204,7 @@ bar {
 new_window pixel 1
 hide_edge_borders none
 exec --no-startup-id guake --execute-command 'tmux new -s tmuxGUAKE'
-output HDMI-A-1 bg ~/Pictures/wall.png stretch
+output LVDS-1 bg ~/Pictures/wall.png stretch
 
 # Floats
 for_window [class="qbittorrent"] floating enable
@@ -262,5 +262,6 @@ mode "$mode_gaps_outer" {
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
+smart_gaps on
 gaps inner 2
 gaps outer 3
