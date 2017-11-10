@@ -1,0 +1,1 @@
+/home/junk/.config/i3/
