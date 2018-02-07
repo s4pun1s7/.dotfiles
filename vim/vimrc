@@ -32,7 +32,7 @@ syntax on
 set tabstop=4
 set smarttab
 set shiftwidth=4
-
+let g:ycm_server_python_interpreter = '/usr/bin/python2'
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'

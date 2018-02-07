@@ -203,8 +203,8 @@ bar {
 # Random assignments, borders, start-ups
 new_window pixel 1
 hide_edge_borders none
-exec --no-startup-id guake --execute-command 'tmux new -s tmuxGUAKE'
-output LVDS-1 bg ~/Pictures/wall.png stretch
+#exec --no-startup-id guake --execute-command 'tmux new -s tmuxGUAKE'
+output "*" bg ~/Pictures/wall.png stretch
 
 # Floats
 for_window [class="qbittorrent"] floating enable
@@ -220,8 +220,8 @@ bindsym XF86AudioPrev exec clementine --previous
 bindsym XF86AudioNext exec clementine --next
 
 #Brightness
-bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
-bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
+bindsym XF86MonBrightnessUp exec brightnessctl s +10% # increase screen brightness
+bindsym XF86MonBrightnessDown exec brightnessctl s 10%- # decrease screen brightness
 
 ##i3-gaps 
 set $mode_gaps Gaps: (o) outer, (i) inner
@@ -264,3 +264,11 @@ mode "$mode_gaps_outer" {
 }
 gaps inner 2
 gaps outer 2
+
+# Multiple displays
+output LVDS-1 pos 0,0 res 1366x768
+output HDMI-A-1 pos 1366,0 res 1920x1080
+#output HDMI-A-1 pos 0,0 res 1920x1080
+input 2:7:SynPS/2_Synaptics_TouchPad {
+	tap enabled
+}
