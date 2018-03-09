@@ -17,8 +17,14 @@ runtime! archlinux.vim
 " do not load defaults if ~/.vimrc is missing
 "let skip_defaults_vim=1
 " Set stuffs
+autocmd FileType cpp source ~/.vim/cpp.vim
+"autocmd FileType c source ~/.vim/cpp.vim
+"autocmd FileType h source ~/.vim/cpp.vim
+"augroup project
+"    autocmd!
+"    autocmd BufRead,BufNewFile *.h,*.c,*.cpp set filetype=c.doxygen
+"augroup END
 
-set path+=**
 set wildmenu
 set nu
 set relativenumber
@@ -26,46 +32,40 @@ set nocompatible
 set laststatus=2
 set exrc
 set secure
-filetype off
-set rtp+=/home/junk/.vim/bundle/Vundle.vim
-syntax on
+"set runtimepath^=/home/junk/.vim/bundle/YouCompleteMe
+set rtp+=/home/junk/.vim/bundle/c.vim
+"set rtp+=/home/junk/.vim/bundle/Vundle.vim
 set tabstop=4
 set smarttab
 set shiftwidth=4
-let g:ycm_server_python_interpreter = '/usr/bin/python2'
-call vundle#begin()
+set autoindent
+set smartindent
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set textwidth=120
+set t_Co=256
+set showmatch
+set omnifunc=syntaxcomplete#Complete
+let g:python3_host_prog='/usr/bin/python3'
+let g:python_host_prog='/usr/bin/python'
+let g:C_UseTool_cmake        = 'yes'
+let g:C_UseTool_doxygen      = 'yes'
+"let g:ycm_global_ycm_extra_conf = '/home/junk/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+"let g:ycm_server_python_interpreter = '/usr/bin/python2'
+syntax on
 
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'vim-scripts/c.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'Valloric/YouCompleteMe'
+" Vundle plugin manager
+"call vundle#begin()
 
-call vundle#end()
+"Plugin 'VundleVim/Vundle.vim'
+"Plugin 'vim-scripts/c.vim'
+"Plugin 'scrooloose/nerdtree'
+"Plugin 'roxma/ncm-clang'
+"
+"call vundle#end()
 filetype plugin indent on
 
 " Mappings
 map <C-n> :NERDTreeToggle<CR>
-nnoremap ,html :1read/home/junk/Documents/skeletons/skeleton.html<CR>3jwf>a
-nnoremap ,p5js :1read/home/junk/Documents/skeletons/skeleton.p5js<CR>
-nnoremap ,cpp :1read/home/junk/Documents/skeletons/skeleton.cpp<CR>
 
-
-" NERDTREE Highlights
-function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
- exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
- exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
-endfunction
-
-call NERDTreeHighlightFile('jade', 'green', 'none', 'green', '#151515')
-call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('md', 'blue', 'none', '#3366FF', '#151515')
-call NERDTreeHighlightFile('yml', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('config', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('conf', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('html', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('styl', 'cyan', 'none', 'cyan', '#151515')
-call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
-call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
-call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
-call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
