@@ -18,8 +18,8 @@ runtime! archlinux.vim
 "let skip_defaults_vim=1
 " Set stuffs
 autocmd FileType cpp source ~/.vim/cpp.vim
-"autocmd FileType c source ~/.vim/cpp.vim
-"autocmd FileType h source ~/.vim/cpp.vim
+autocmd FileType c source ~/.vim/cpp.vim
+autocmd FileType h source ~/.vim/cpp.vim
 "augroup project
 "    autocmd!
 "    autocmd BufRead,BufNewFile *.h,*.c,*.cpp set filetype=c.doxygen
@@ -51,8 +51,6 @@ let g:python3_host_prog='/usr/bin/python3'
 let g:python_host_prog='/usr/bin/python'
 let g:C_UseTool_cmake        = 'yes'
 let g:C_UseTool_doxygen      = 'yes'
-"let g:ycm_global_ycm_extra_conf = '/home/junk/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-"let g:ycm_server_python_interpreter = '/usr/bin/python2'
 syntax on
 
 " Vundle plugin manager
@@ -68,4 +66,3 @@ filetype plugin indent on
 
 " Mappings
 map <C-n> :NERDTreeToggle<CR>
-

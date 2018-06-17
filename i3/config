@@ -30,7 +30,7 @@ font pango:DejaVu Sans Mono 8
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec terminator 
+bindsym $mod+Return exec termite 
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -39,7 +39,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod+Shift+x exec i3lock --color 475263
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec j4-dmenu-desktop
+bindsym $mod+d exec rofi -show run
 
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
@@ -139,7 +139,7 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 #---------------CUSTOM BINDINGS----------------
 bindsym $mod+c exec chromium
-bindsym Print exec swaygrab
+bindsym Print exec scrot
 #----------------------------------------------
 
 # resize window (you can also use the mouse for that)
@@ -185,7 +185,7 @@ bindsym $mod+r mode "resize"
 # finds out, if available)
 
 bar {
-	height 13
+	height 14
 #    i3bar_command ~/.i3/lemonbar/i3_lemonbar.py
     position top
 	status_command i3status
@@ -210,8 +210,9 @@ bar {
 new_window pixel 1
 hide_edge_borders none
 exec --no-startup-id guake
-exec --no-startup-id feh --bg-scale /home/junk/Pictures/black.jpg
+exec --no-startup-id wal -i "/home/junk/walls/"
 exec --no-startup-id compton
+exec --no-startup-id conky --config=/home/junk/.config/conky.conf
 # Floats
 for_window [class="qbittorrent"] floating enable
 for_window [class="gimp"] floating enable
