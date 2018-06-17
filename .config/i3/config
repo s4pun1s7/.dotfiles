@@ -1,8 +1,3 @@
-#
-#
-#
-#
-#
 # Basics
 set $mod Mod4
 set $term --no-startup-id termite
@@ -20,7 +15,7 @@ floating_modifier $mod
 exec --no-startup-id guake
 exec --no-startup-id wal -i "/home/junk/walls/"
 exec --no-startup-id compton
-exec --no-startup-id conky --config=/home/junk/.config/conky.conf
+exec --no-startup-id conky --config=/home/junk/.config/conky/config
 
 # Bindings
 bindsym $mod+Return exec $term 
