@@ -1,0 +1,5 @@
+.config/calcurse/*
+!.config/calcurse/conf
+.config/newsboat/*
+!.config/newsboat/config
+!.config/newsboat/urls

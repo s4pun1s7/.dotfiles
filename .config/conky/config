@@ -1,0 +1,83 @@
+alignment top_right
+background yes
+border_width 5
+default_color FF0000  #413536 # grey 5f5f5f 3F3F3F 183149 3B3B3B 26211F
+double_buffer yes
+draw_borders no
+draw_outline no
+draw_shades no
+draw_graph_borders no
+gap_x 10
+gap_y 25
+maximum_width 1000
+minimum_size 175
+no_buffers yes
+override_utf8_locale yes
+own_window yes
+own_window_title Conky
+own_window_class Conky
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+own_window_transparent yes
+own_window_type override 	## normal /override /desktop
+text_buffer_size 8000
+total_run_times 0
+update_interval 1
+uppercase no
+use_xft yes
+xftalpha 1
+xftfont Freesans:pixelsize=11
+
+#				fonts
+#	Blue Highway
+#	Zegoe Light - U
+#	Zekton
+#	Calibri
+#	Engebrechtre
+#	Opeln2001
+#	Pricedown
+
+TEXT
+#${font BankGothic Md BT:pixelsize=15}${alignc}${time [ %A, %H:%M:%S ]}${font}
+#${font BankGothic Md BT:pixelsize=65}${alignc}${time %d %B, %Y}${font}
+#${font BankGothic Md BT:pixelsize=12}${alignc}[ CPU1: ${cpu cpu0}% CPU2: ${cpu cpu1}% CPU3: ${cpu cpu2}% #CPU4: ${cpu cpu3}% ]
+#${font BankGothic Md BT:pixelsize=12}${alignc}[ RAM: ${mem} | WLAN Up: ${upspeed wlan0} WLAN Dwn: ${downspeed #wlan0} ]
+
+#${font Opificio:pixelsize=25}${alignr}${time %A, %H:%M}${font}
+#${font Opificio:pixelsize=45}${alignr}${time %d %B, %Y}${font}
+#${font Opificio:pixelsize=8}
+#${font Opificio:pixelsize=15}${alignr}CPU1: ${cpu cpu0}% CPU2: ${cpu cpu1}% CPU3: ${cpu cpu2}% CPU4: ${cpu cpu3}%
+#${font Opificio:pixelsize=15}${alignr}RAM: ${mem} | WLAN Up: ${upspeed wlan0} WLAN Dwn: ${downspeed wlan0}
+
+${alignc}${nodename} on ${kernel}
+${voffset -6}${hr}
+-UpTime${goto 120}${uptime}
+${voffset -3}${hr}
+-Processor${goto 120}${cpu cpu0}%
+	${cpugraph cpu0 50,230 D3E6E6 FF8800 -t -l}${texeci 60}
+-Memory${goto 120}${memperc}%
+	${memgraph 50,230 D3E6E6 FF8800 -t -l}${texeci 60}
+-I/O${goto 120}${diskio}/s${alignr}${texeci 60}
+	${diskiograph 50,230 D3E6E6 FF8800 -t -l}
+${voffset -3}${hr}
+-disk t°${goto 120}${acpitemp}°C
+${voffset -3}${hr}
+-linux${goto 120}${fs_used_perc /}%${alignr}${fs_used /}/${fs_size /}
+	${color BBBAB0}${fs_bar 7,230 /}${color}
+-windows${goto 120}${fs_used_perc /mnt}%${alignr}${fs_used /mnt}/${fs_size /mnt}
+	${color BBBAB0}${fs_bar 7,230 /mnt}${color}
+${voffset -3}${hr}
+-bat${goto 120}${exec acpi -b | grep "Battery 0" | awk '{ print $4}'}${alignr}${exec acpi -b | grep "Battery 0" | awk '{ print $5}'}
+	${color BBBAB0}${battery_bar 7,230 BAT0}${color}
+${voffset -3}${hr}
+-procs ${goto 120}Mem
+1 :${top_mem name 1} ${goto 115}${top_mem mem 1}%   \
+${alignr} total ${memmax}
+2 :${top_mem name 2} ${goto 115}${top_mem mem 2}%   \
+${alignr} free ${memfree}
+3 :${top_mem name 3} ${goto 115}${top_mem mem 3}%   \
+${alignr} usage ${mem}
+4 :${top_mem name 4} ${goto 115}${top_mem mem 4}%   \
+${alignr} Swap ${swap}
+5 :${top_mem name 5} ${goto 115}${top_mem mem 5}%
+${voffset -3}${hr}${if_running mocp}
+${voffset -3}${hr}${endif}

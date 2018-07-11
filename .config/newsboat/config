@@ -1,0 +1,22 @@
+# Bindings
+bind-key j down
+bind-key k up
+bind-key j next articlelist
+bind-key k prev articlelist
+bind-key J next-feed articlelist
+bind-key K prev-feed articlelist
+bind-key g home
+
+# Macros
+browser qutebrowser
+macro , open-in-browser
+macro v set browser "i3 exec mpv"; open-in-browser ; set browser qutebrowser
+macro p set browser "lynx" open-in-browser ; set browser qutebrowser
+
+# Colors
+color listnormal magenta default
+color listfocus black yellow standout bold
+color listnormal_unread green default 
+color listfocus_unread yellow default bold 
+color info red black bold
+color article cyan default
