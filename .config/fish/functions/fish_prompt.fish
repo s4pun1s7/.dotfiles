@@ -1,42 +1,46 @@
 function fish_prompt --description 'Write out the prompt'
-	#Save the return status of the previous command
-    set stat $status
-
-    if not set -q __fish_prompt_normal
-        set -g __fish_prompt_normal (set_color normal)
+    set -g fish_key_bindings fish_vi_key_bindings
+    set laststatus $status
+    function _git_branch_name
+        echo (git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
     end
-
-    if not set -q __fish_color_blue
-        set -g __fish_color_blue (set_color -o blue)
+    function _is_git_dirty
+        echo (git status -s --ignore-submodules=dirty ^/dev/null)
     end
-
-    #Set the color for the status depending on the value
-    set __fish_color_status (set_color -o green)
-    if test $stat -gt 0
-        set __fish_color_status (set_color -o red)
-    end
-
-    switch "$USER"
-
-        case root toor
-
-            if not set -q __fish_prompt_cwd
-                if set -q fish_color_cwd_root
-                    set -g __fish_prompt_cwd (set_color $fish_color_cwd_root)
-                else
-                    set -g __fish_prompt_cwd (set_color $fish_color_cwd)
+    if [ (_git_branch_name) ]
+        set -l git_branch (set_color -o blue)(_git_branch_name)
+        if [ (_is_git_dirty) ]
+            for i in (git branch -qv --no-color | string match -r '\*' | cut -d' ' -f4- | cut -d] -f1 | tr , \n)\
+ (git status --porcelain | cut -c 1-2 | uniq)
+                switch $i
+                    case "*[ahead *"
+                        set git_status "$git_status"(set_color red)⬆
+                    case "*behind *"
+                        set git_status "$git_status"(set_color red)⬇
+                    case "."
+                        set git_status "$git_status"(set_color green)✚
+                    case " D"
+                        set git_status "$git_status"(set_color red)✖
+                    case "*M*"
+                        set git_status "$git_status"(set_color green)✱
+                    case "*R*"
+                        set git_status "$git_status"(set_color purple)➜
+                    case "*U*"
+                        set git_status "$git_status"(set_color brown)═
+                    case "??"
+                        set git_status "$git_status"(set_color red)≠
                 end
             end
-
-            printf '%s@%s %s%s%s# ' $USER (prompt_hostname) "$__fish_prompt_cwd" (prompt_pwd) "$__fish_prompt_normal"
-
-        case '*'
-
-            if not set -q __fish_prompt_cwd
-                set -g __fish_prompt_cwd (set_color $fish_color_cwd)
-            end
-
-            printf '[%s] %s%s@%s %s%s %s(%s)%s \f\r> ' (date "+%H:%M:%S") "$__fish_color_blue" $USER (prompt_hostname) "$__fish_prompt_cwd" "$PWD" "$__fish_color_status" "$stat" "$__fish_prompt_normal"
-
+        else
+            set git_status (set_color green):
+        end
+        set git_info "(git$git_status$git_branch"(set_color white)")"
+    end
+    set_color -b black
+    printf '%s%s%s%s%s%s%s%s%s%s%s%s%s' (set_color -o white) '❰' (set_color green) $USER (set_color white) '❙' (set_color yellow) (echo $PWD | sed -e "s|^$HOME|~|") (set_color white) $git_info (set_color white) '❱' (set_color white)
+    if test $laststatus -eq 0
+        printf "%s✔%s≻%s " (set_color -o green) (set_color white) (set_color normal)
+    else
+        printf "%s✘%s≻%s " (set_color -o red) (set_color white) (set_color normal)
     end
 end
