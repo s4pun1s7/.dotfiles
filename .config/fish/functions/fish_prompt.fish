@@ -1,5 +1,4 @@
 function fish_prompt --description 'Write out the prompt'
-    set -g fish_key_bindings fish_vi_key_bindings
     set laststatus $status
     function _git_branch_name
         echo (git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
