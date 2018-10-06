@@ -1,0 +1,12 @@
+pane	0	0	:fish	0	:	0	:/home/thrash/uni/oop	0	nvim	:nvim inc3.cpp
+pane	0	0	:fish	0	:	1	:/home/thrash	0	nvim	:nvim uni/oop/inc2.cpp
+pane	0	0	:fish	0	:	2	:/home/thrash/uni/oop	1	fish	:
+pane	0	1	:main	0	:-	0	:/home/thrash	1	bash	:sudo su
+pane	0	1	:main	0	:-	1	:/home/thrash/Downloads/tor-browser_en-US/Browser	0	fish	:
+pane	0	2	:dotfiles	1	:*	0	:/home/thrash	0	nvim	:nvim .vimrc
+pane	0	2	:dotfiles	1	:*	1	:/home/thrash	0	nvim	:nvim .i3/config
+pane	0	2	:dotfiles	1	:*	2	:/home/thrash	1	nvim	:nvim Downloads/tor-browser_en-US/Browser/start-tor-browser
+window	0	0	0	:	6c79,227x56,0,0{113x56,0,0,1,113x56,114,0[113x18,114,0,2,113x37,114,19,3]}
+window	0	1	0	:-	44ad,227x56,0,0{113x56,0,0,4,113x56,114,0,5}
+window	0	2	1	:*	f49f,227x56,0,0{113x56,0,0,6,113x56,114,0[113x28,114,0,7,113x27,114,29,8]}
+state	0	
