@@ -8,10 +8,10 @@ bind-key K prev-feed articlelist
 bind-key g home
 
 # Macros
-browser qutebrowser
+browser google-chrome-stable
 macro , open-in-browser
-macro v set browser "i3 exec mpv"; open-in-browser ; set browser qutebrowser
-macro p set browser "lynx" open-in-browser ; set browser qutebrowser
+macro v set browser "i3 exec mpv"; open-in-browser ; set browser google-chrome-stable 
+macro p set browser "lynx"; open-in-browser 
 
 # Colors
 color listnormal magenta default
