@@ -36,6 +36,9 @@ set scrolloff=8
 set clipboard=unnamedplus
 set listchars=trail:·
 set timeoutlen=500
+set wildignore+=.svn,CVS,.git 
+set wildignore+=*.o,*.a,*.class,*.mo,*.la,*.so,*.lo,*.la,*.obj,*.pyc
+set wildignore+=*.exe,*.zip,*.jpg,*.png,*.gif,*.jpeg 
 
 " Statusline
 set statusline=
@@ -81,8 +84,8 @@ nnoremap <Right>	:echoerr "Use l"<CR>
 nnoremap <Up>		:echoerr "Use k"<CR>
 nnoremap <Down>		:echoerr "Use j"<CR>
 nnoremap / /\V\c
-nnoremap <C-d> 25jzz
-nnoremap <C-u> 25kzz
+nnoremap J 25jzz
+nnoremap K 25kzz
 nnoremap n nzz
 nnoremap N Nzz
 nnoremap <leader>fr :call RenameCurrentFile()<cr>
@@ -92,8 +95,8 @@ nnoremap <C-n> :NERDTreeToggle<CR><C-W>=
 nnoremap zN zR
 nnoremap H 0
 nnoremap L $
-nnoremap J G
-nnoremap K gg
+nnoremap ,html :0read ~/Templates/skel.html<CR>6j3wa
+nnoremap ,php :0read ~/Templates/skel.php<CR>ggo
 
 inoremap <silent><expr> jk getline('.') =~ '^\s\+$' && empty(&buftype) ? '<ESC>:call setline(line("."), "")<CR>' : '<ESC>'
 inoremap {      {}<Left>
@@ -178,6 +181,21 @@ augroup line_return
 		\ if line("'\"") > 0 && line("'\"") <= line("$") |
 		\	execute 'normal! g`"zvzz' |
 		\ endif
+augroup END
+
+augroup web
+	au!
+
+	au FileType html setlocal tabstop=2 |
+		\ set softtabstop=2 |
+		\ set expandtab |
+		\ set foldenable |
+		\ set foldlevelstart=1 |
+		\ set foldmethod=indent |
+		\ set foldnestmax=10 |
+		\ set smartindent
+	au FileType css setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
+
 augroup END
 
 
