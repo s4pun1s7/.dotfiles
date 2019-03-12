@@ -1,10 +1,9 @@
 " Misc {{{
-execute pathogen#infect()
-execute pathogen#helptags()
+"
+filetype off
+filetype plugin indent on
 
-filetype on
-filetype plugin on
-
+let mapleader = ","
 set path+=**
 set background=dark
 set shell=bash
@@ -13,10 +12,50 @@ set nocursorcolumn
 set regexpengine=1
 set synmaxcol=256
 set colorcolumn=110
-
 highlight ColorColumn ctermbg=darkgray
 
 " Misc }}}
+
+" Plugins {{{
+
+call plug#begin('~/.vim/plugged')
+
+" VIM enhancements
+Plug 'ciaranm/securemodelines'
+Plug 'justinmk/vim-sneak'
+
+" GUI enhancements
+Plug 'itchyny/lightline.vim'
+Plug 'w0rp/ale'
+Plug 'machakann/vim-highlightedyank'
+Plug 'andymass/vim-matchup'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'tpope/vim-fugitive'
+
+" Fuzzy finder
+Plug 'airblade/vim-rooter'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+
+" Completion plugins
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-tmux'
+Plug 'ncm2/ncm2-path'
+
+" Syntactic language support
+Plug 'cespare/vim-toml'
+Plug 'rust-lang/rust.vim'
+Plug 'dag/vim-fish'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+
+call plug#end()
+
+" Plugins }}}
+
 
 " Set {{{
 set smartcase
@@ -40,24 +79,6 @@ set wildignore+=.svn,CVS,.git
 set wildignore+=*.o,*.a,*.class,*.mo,*.la,*.so,*.lo,*.la,*.obj,*.pyc
 set wildignore+=*.exe,*.zip,*.jpg,*.png,*.gif,*.jpeg 
 
-" Statusline
-set statusline=
-set statusline+=%#PmenuSel#
-set statusline+=%#LineNr#
-set statusline+=\ %F
-set statusline+=%m\
-set statusline+=%=
-set statusline+=%#CursorColumn#
-set statusline+=\ %y
-set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
-set statusline+=\[%{&fileformat}\]
-set statusline+=\ %p%%
-set statusline+=\ %l:%c
-set statusline+=\/\%L
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
 " Numbers
 set number
 set numberwidth=5
@@ -79,6 +100,7 @@ set foldtext=FoldText()
 " SET }}}
 
 " Maps {{{
+noremap <leader>s :Rg
 nnoremap <Left>		:echoerr "Use h"<CR>
 nnoremap <Right>	:echoerr "Use l"<CR>
 nnoremap <Up>		:echoerr "Use k"<CR>
@@ -95,8 +117,8 @@ nnoremap <C-n> :NERDTreeToggle<CR><C-W>=
 nnoremap zN zR
 nnoremap H 0
 nnoremap L $
-nnoremap ,html :0read ~/Templates/skel.html<CR>6j3wa
-nnoremap ,php :0read ~/Templates/skel.php<CR>ggo
+nnoremap <leader>html :0read ~/Templates/skel.html<CR>6j3wa
+nnoremap <leader>php :0read ~/Templates/skel.php<CR>ggo
 
 inoremap <silent><expr> jk getline('.') =~ '^\s\+$' && empty(&buftype) ? '<ESC>:call setline(line("."), "")<CR>' : '<ESC>'
 inoremap {      {}<Left>
@@ -139,17 +161,83 @@ function! RenameCurrentFile()
         exec ':e!'
     endif
 endfunction
+
+" <leader>s for Rg search
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
+
+function! s:list_cmd()
+  let base = fnamemodify(expand('%'), ':h:.:S')
+  return base == '.' ? 'fd --type file --follow' : printf('fd --type file --follow | proximity-sort %s', expand('%'))
+endfunction
+
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, {'source': s:list_cmd(),
+  \                               'options': '--tiebreak=index'}, <bang>0)
+
 " functions }}}
 
 " Settings {{{
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+let g:fzf_layout = { 'down': '~20%' }
+let g:secure_modelines_allowed_items = [
+                \ "textwidth",   "tw",
+                \ "softtabstop", "sts",
+                \ "tabstop",     "ts",
+                \ "shiftwidth",  "sw",
+                \ "expandtab",   "et",   "noexpandtab", "noet",
+                \ "filetype",    "ft",
+                \ "foldmethod",  "fdm",
+                \ "readonly",    "ro",   "noreadonly", "noro",
+                \ "rightleft",   "rl",   "norightleft", "norl",
+                \ "colorcolumn"
+                \ ]
 
-let g:C_UseTool_cmake    = 'yes' 
-let g:C_UseTool_doxygen = 'yes' 
+"let g:lightline = {
+"      \ 'component_function': {
+"      \   'filename': 'LightlineFilename',
+"      \ },
+"\ }
+
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_save = 0
+let g:ale_lint_on_enter = 0
+let g:ale_virtualtext_cursor = 1
+let g:ale_rust_rls_config = {
+	\ 'rust': {
+		\ 'all_targets': 1,
+		\ 'build_on_save': 1,
+		\ 'clippy_preference': 'on'
+	\ }
+\ }
+
+let g:ale_rust_rls_toolchain = ''
+let g:ale_linters = {'rust': ['rls']}
+highlight link ALEWarningSign Todo
+highlight link ALEErrorSign WarningMsg
+highlight link ALEVirtualTextWarning Todo
+highlight link ALEVirtualTextInfo Todo
+highlight link ALEVirtualTextError WarningMsg
+highlight ALEError guibg=None
+highlight ALEWarning guibg=None
+let g:ale_sign_error = "✖"
+let g:ale_sign_warning = "⚠"
+let g:ale_sign_info = "i"
+let g:ale_sign_hint = "➤"
+
+" Completion
+let g:python3_host_prog="/usr/bin/python3"
+autocmd BufEnter * call ncm2#enable_for_buffer()
+set completeopt=noinsert,menuone,noselect
+" tab to select
+" and don't hijack my enter key
+inoremap <expr><Tab> (pumvisible()?(empty(v:completed_item)?"\<C-n>":"\<C-y>"):"\<Tab>")
+inoremap <expr><CR> (pumvisible()?(empty(v:completed_item)?"\<CR>\<CR>":"\<C-y>"):"\<CR>")
 
 " Settings }}}
 
@@ -195,7 +283,6 @@ augroup web
 		\ set foldnestmax=10 |
 		\ set smartindent
 	au FileType css setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
-
 augroup END
 
 
