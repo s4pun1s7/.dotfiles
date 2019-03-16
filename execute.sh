@@ -1,21 +1,44 @@
 #!/usr/bin/env bash
 
+if [[ $EUID = 0 ]]; then 
+	echo "Please don't run as root"
+	exit 1
+fi
+
+usage() {
+    cat <<EOF
+
+This script is used to install and link dotfiles
+
+Usage: ${0##*/} [command]
+
+    -h, -?, --help      Print this help message
+    -u, --update		Load and link configs from github.com/fokditkak/.dotfiles
+    -i, --install       Install packages
+
+If no commands are added, script will run in pseudo interactive mode
+only executing backup functions.
+
+EOF
+}
+
 git_clone() {
 	git --version &> /dev/null
 	if [[ $? -ne 0 ]]; then
 		echo "You need to install git."
+		exit 1
 	fi
 	if ! [[ -d $HOME/.dotfiles ]]; then 
 		git clone https://github.com/fokditkak/.dotfiles.git $HOME/.dotfiles
 	else
 		echo "There is an existing configuration in $HOME/.dotfiles"
 		echo "Should you choose to replace, the script WILL delete the dirs(if they exist):"
-		echo "	.tmux"
-		echo "	.vim"
-		echo "	.config/calcurse"
-		echo "	.config/fish"
-		echo "	.config/nvim"
-		echo "	.config/termite"
+		echo "	$HOME.tmux"
+		echo "	$HOME.vim"
+		echo "	$HOME.config/calcurse"
+		echo "	$HOME.config/fish"
+		echo "	$HOME.config/nvim"
+		echo "	$HOME.config/termite"
 		echo -n "Replace? (y/n)"
 		read -p ": " ganswer
 		ganswer=${ganswer,,}
@@ -24,7 +47,6 @@ git_clone() {
 		else
 			rm -rf $HOME/.dotfiles
 			rm -rf $HOME/.tmux
-			rm -rf $HOME/.vim
 			rm -rf $HOME/.config/calcurse
 			rm -rf $HOME/.config/fish
 			rm -rf $HOME/.config/nvim
@@ -38,14 +60,15 @@ git_clone() {
 sym_linker() {
 	echo -n "Symlinkig files..."
 	ln -sf $HOME/.dotfiles/.vimrc $HOME/.vimrc
-	ln -sf $HOME/.dotfiles/.tmux.conf $HOME/.tmux.conf
-	ln -sf $HOME/.dotfiles/.vim $HOME/
+	ln -sf $HOME/.dotfiles/.tmux/tmux.conf $HOME/.tmux.conf
 	ln -sf $HOME/.dotfiles/.tmux $HOME/
 	ln -sf $HOME/.dotfiles/.config/calcurse $HOME/.config/
 	ln -sf $HOME/.dotfiles/.config/fish $HOME/.config/
 	ln -sf $HOME/.dotfiles/.config/termite $HOME/.config/
 	ln -sf $HOME/.dotfiles/.config/nvim $HOME/.config/
-	echo -n "Done"
+	echo "Done"
+	echo "Installing nvim plugins..."
+	exec nvim +PlugInstall &
 }
 
 #prompt() {
