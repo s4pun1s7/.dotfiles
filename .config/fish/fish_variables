@@ -10,6 +10,7 @@ SETUVAR _fish_abbr_ar:sudo\x20apt\x20remove
 SETUVAR _fish_abbr_as:apt\x2dcache\x20search
 SETUVAR _fish_abbr_au:sudo\x20apt\x2dget\x20update
 SETUVAR _fish_abbr_auu:sudo\x20apt\x2dget\x20upgrade
+SETUVAR _fish_abbr_dev:cd\x20\x7e/dev
 SETUVAR _fish_abbr_gc:git\x20commit\x20\x2dm
 SETUVAR _fish_abbr_gd:git\x20diff
 SETUVAR _fish_abbr_gf:git\x20fetch

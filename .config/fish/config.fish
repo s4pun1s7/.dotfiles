@@ -11,6 +11,8 @@ abbr gpl 'git pull'
 abbr gc 'git commit -m'
 abbr gf 'git fetch'
 abbr gd 'git diff'
+abbr gco 'git checkout'
+abbr dev 'cd ~/dev'
 
 # Base16 Shell
 if status --is-interactive

@@ -31,7 +31,6 @@ highlight ColorColumn ctermbg=darkgray
 call plug#begin('~/.vim/plugged')
 
 " VIM enhancements
-Plug 'ciaranm/securemodelines'
 Plug 'justinmk/vim-sneak'
 
 " GUI enhancements
@@ -41,7 +40,6 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'andymass/vim-matchup'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'tpope/vim-fugitive'
-Plug 'chriskempson/base16-vim'
 
 " Fuzzy finder
 Plug 'airblade/vim-rooter'
