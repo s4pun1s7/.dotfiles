@@ -3,9 +3,19 @@
 filetype off
 filetype plugin indent on
 
+" deal with colors
+if !has('gui_running')
+	set t_Co=256
+endif
+
+" Colors
+set termguicolors
+set background=dark
+colorscheme base16-solarized-dark
+hi Normal ctermbg=NONE
+
 let mapleader = ","
 set path+=**
-set background=dark
 set shell=bash
 set lazyredraw
 set nocursorcolumn
@@ -31,6 +41,7 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'andymass/vim-matchup'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'tpope/vim-fugitive'
+Plug 'chriskempson/base16-vim'
 
 " Fuzzy finder
 Plug 'airblade/vim-rooter'
@@ -55,7 +66,6 @@ Plug 'plasticboy/vim-markdown'
 call plug#end()
 
 " Plugins }}}
-
 
 " Set {{{
 set smartcase
