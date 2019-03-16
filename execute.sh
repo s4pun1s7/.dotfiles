@@ -47,7 +47,6 @@ git_clone() {
 		else
 			rm -rf $HOME/.dotfiles
 			rm -rf $HOME/.tmux
-			rm -rf $HOME/.vim
 			rm -rf $HOME/.config/calcurse
 			rm -rf $HOME/.config/fish
 			rm -rf $HOME/.config/nvim
@@ -61,8 +60,7 @@ git_clone() {
 sym_linker() {
 	echo -n "Symlinkig files..."
 	ln -sf $HOME/.dotfiles/.vimrc $HOME/.vimrc
-	ln -sf $HOME/.dotfiles/.tmux.conf $HOME/.tmux.conf
-	ln -sf $HOME/.dotfiles/.vim $HOME/
+	ln -sf $HOME/.dotfiles/.tmux/tmux.conf $HOME/.tmux.conf
 	ln -sf $HOME/.dotfiles/.tmux $HOME/
 	ln -sf $HOME/.dotfiles/.config/calcurse $HOME/.config/
 	ln -sf $HOME/.dotfiles/.config/fish $HOME/.config/
