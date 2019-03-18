@@ -3,9 +3,19 @@
 filetype off
 filetype plugin indent on
 
+" deal with colors
+if !has('gui_running')
+	set t_Co=256
+endif
+
+" Colors
+set termguicolors
+set background=dark
+colorscheme base16-solarized-dark
+hi Normal ctermbg=NONE
+
 let mapleader = ","
 set path+=**
-set background=dark
 set shell=bash
 set lazyredraw
 set nocursorcolumn
@@ -21,7 +31,6 @@ highlight ColorColumn ctermbg=darkgray
 call plug#begin('~/.vim/plugged')
 
 " VIM enhancements
-Plug 'ciaranm/securemodelines'
 Plug 'justinmk/vim-sneak'
 
 " GUI enhancements
@@ -55,7 +64,6 @@ Plug 'plasticboy/vim-markdown'
 call plug#end()
 
 " Plugins }}}
-
 
 " Set {{{
 set smartcase

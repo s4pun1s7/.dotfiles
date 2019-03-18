@@ -1,10 +1,22 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
+SETUVAR --export BROWSER:google\x2dchrome\x2dstable
 SETUVAR --export EDITOR:vim
-SETUVAR --export BROWSER:google-chrome-stable
 SETUVAR __fish_classic_git_prompt_initialized:\x1d
 SETUVAR __fish_init_2_39_8:\x1d
 SETUVAR __fish_init_2_3_0:\x1d
+SETUVAR _fish_abbr_ai:sudo\x20apt\x20install
+SETUVAR _fish_abbr_ar:sudo\x20apt\x20remove
+SETUVAR _fish_abbr_as:apt\x2dcache\x20search
+SETUVAR _fish_abbr_au:sudo\x20apt\x2dget\x20update
+SETUVAR _fish_abbr_auu:sudo\x20apt\x2dget\x20upgrade
+SETUVAR _fish_abbr_dev:cd\x20\x7e/dev
+SETUVAR _fish_abbr_gc:git\x20commit\x20\x2dm
+SETUVAR _fish_abbr_gd:git\x20diff
+SETUVAR _fish_abbr_gf:git\x20fetch
+SETUVAR _fish_abbr_gp:git\x20push
+SETUVAR _fish_abbr_gpl:git\x20pull
+SETUVAR _fish_abbr_gs:git\x20status
 SETUVAR fish_color_autosuggestion:CCCCCC
 SETUVAR fish_color_cancel:\x2dr
 SETUVAR fish_color_command:00FF00
