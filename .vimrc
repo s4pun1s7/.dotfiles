@@ -14,6 +14,13 @@ set background=dark
 colorscheme base16-solarized-dark
 hi Normal ctermbg=NONE
 
+" netrw
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 25
+
 let mapleader = ","
 set path+=**
 set shell=bash
@@ -38,14 +45,15 @@ Plug 'itchyny/lightline.vim'
 Plug 'w0rp/ale'
 Plug 'machakann/vim-highlightedyank'
 Plug 'andymass/vim-matchup'
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-vinegar'
 
 " Fuzzy finder
-Plug 'airblade/vim-rooter'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
+Plug 'phildawes/racer'
+Plug 'racer-rust/vim-racer'
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
 
@@ -118,10 +126,10 @@ nnoremap J 25jzz
 nnoremap K 25kzz
 nnoremap n nzz
 nnoremap N Nzz
+nnoremap <leader>gs :Gstatus<cr>
 nnoremap <leader>fr :call RenameCurrentFile()<cr>
 nnoremap <leader>fm :call MoveCurrentFile()<cr>
 nnoremap <silent> <leader>fD :call delete(expand('%')) \| bdelete!<CR>
-nnoremap <C-n> :NERDTreeToggle<CR><C-W>=
 nnoremap zN zR
 nnoremap H 0
 nnoremap L $
