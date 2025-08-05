@@ -1,7 +1,9 @@
-[submodule ".tmux/plugins/tmux-ressurect"]
-	path = .tmux/plugins/tmux-ressurect
-	url = https://github.com/tmux-plugins/tmux-resurrect.git
-
-[submodule ".tmux/plugins/tpm"]
-	path = .tmux/plugins/tpm
-	url = https://github.com/tmux-plugins/tpm.git
+[submodule "dwm"]
+	path = dwm
+	url = https://github.com/s4pun1s7/dwm.git
+[submodule "st"]
+	path = st
+	url = https://github.com/s4pun1s7/st.git
+[submodule "slstatus"]
+	path = slstatus
+	url = https://github.com/s4pun1s7/slstatus.git
