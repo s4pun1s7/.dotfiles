@@ -1,0 +1,245 @@
+# Build artifacts
+*.o
+*.a
+*.so
+*.d
+*.exe
+*.out
+*.app
+st
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Precompiled Headers
+*.gch
+*.pch
+
+
+# Ignore submodule control and working dirs
+.gitmodules
+dwm/
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+docker-compose.override.yml
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.bak
+*.backup
+*.old
+
+# Package files
+*.deb
+*.rpm
+*.tar.gz
+*.zip
+*.7z
+
+# Configuration files that might contain sensitive data
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Backup files
+*~
+*.orig
+*.rej
+
+# Test files
+test_*
+*_test
+*.test
+
+# Documentation build
+docs/_build/
+site/
+
+# Python (if any scripts use Python)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Node.js (if any scripts use Node.js)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+
+# Ruby (if any scripts use Ruby)
+*.gem
+*.rbc
+/.config
+/coverage/
+/InstalledFiles
+/pkg/
+/spec/reports/
+/spec/examples.txt
+/test/tmp/
+/test/version_tmp/
+/tmp/
+
+# Java (if any scripts use Java)
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+
+# Go (if any scripts use Go)
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+
+# Rust (if any scripts use Rust)
+target/
+Cargo.lock
+
+# Local configuration overrides
+config.local
+*.local
+
+# tmux resurrect files (since we removed tmux plugins)
+.tmux/resurrect/
+
+# Personal notes and todos
+TODO.md
+NOTES.md
+*.todo
+*.note
+
+# Backup directories
+backup/
+backups/
+*.backup/
+
+# Cache directories
+.cache/
+cache/
+*.cache
+
+# Lock files
+*.lock
+.lock
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Certificate files
+*.crt
+*.cert
+*.pem
+*.key
+
+# SSH keys and configs
+id_rsa*
+*.pub
+.ssh/
+
+# GPG files
+*.gpg
+*.asc
+.gnupg/
+
+# Passwords and secrets
+passwords.txt
+secrets.txt
+*.secret 
