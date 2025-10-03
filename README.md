@@ -20,6 +20,8 @@ This repository uses different branches for different operating systems:
   - iTerm2/Alacritty configurations
   - macOS-specific automation scripts
 
+For detailed information about the branch structure, see [BRANCHES.md](BRANCHES.md).
+
 ### Setting Up Branches
 
 To create the platform-specific branches, run:
