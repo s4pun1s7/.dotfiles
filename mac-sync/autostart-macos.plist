@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Replace YOURNAME with your actual macOS username -->
+    <key>Label</key>
+    <string>com.user.autostart</string>
+
+    <!-- Program to execute -->
+    <key>Program</key>
+    <string>/Users/YOURNAME/.config/autostart/startup.sh</string>
+
+    <!-- Run at login -->
+    <key>RunAtLoad</key>
+    <true/>
+
+    <!-- Keep alive (restart if crashes) -->
+    <key>KeepAlive</key>
+    <true/>
+
+    <!-- Standard out/error logging -->
+    <key>StandardOutPath</key>
+    <string>/tmp/autostart.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/tmp/autostart.err</string>
+
+    <!-- Environment variables -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin:/Users/YOURNAME/Development/flutter/bin</string>
+        <key>HOME</key>
+        <string>/Users/YOURNAME</string>
+    </dict>
+</dict>
+</plist>
