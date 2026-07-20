@@ -1,7 +1,6 @@
 set nocompatible            " disable compatibility to old-time vi
-set showmatch               " show matching 
-set ignorecase              " case insensitive 
-"set mouse=v                 " middle-click paste with 
+set showmatch               " show matching
+set ignorecase              " case insensitive
 set hlsearch                " highlight search 
 set incsearch               " incremental search
 set tabstop=4               " number of columns occupied by a tab 
@@ -17,7 +16,11 @@ syntax on                   " syntax highlighting
 set mouse=a                 " enable mouse click
 set relativenumber
 set nowrap
-set clipboard+=unnamedplus   " using system clipboard
+if has('mac') || system('uname -s') =~? 'darwin'
+    set clipboard+=unnamed      " macOS system clipboard
+else
+    set clipboard+=unnamedplus   " Linux system clipboard
+endif
 filetype plugin on
 set cursorline              " highlight current cursorline
 set ttyfast                 " Speed up scrolling in Vim
