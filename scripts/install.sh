@@ -79,8 +79,8 @@ install_dependencies() {
     # Install missing packages
     if [[ ${#missing_packages[@]} -gt 0 ]]; then
         print_status "Installing missing packages: ${missing_packages[*]}"
-        sudo apt update
-        sudo apt install -y "${missing_packages[@]}"
+        sudo dnf update
+        sudo dnf install -y "${missing_packages[@]}"
     else
         print_success "All dependencies are already installed"
     fi
@@ -184,8 +184,8 @@ create_symlinks() {
 # Function to update the system
 update_system() {
     print_status "Updating system packages..."
-    sudo apt update
-    sudo apt upgrade -y
+    sudo dnf update
+    sudo dnf upgrade -y
     print_success "System updated"
 }
 
