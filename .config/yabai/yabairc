@@ -1,0 +1,35 @@
+#!/usr/bin/env sh
+# yabai config — dwm/i3-style tiling for macOS
+# Docs: https://github.com/koekeishiya/yabai/wiki
+
+# --- layout ---
+yabai -m config layout                bsp      # like dwm tile
+yabai -m config window_placement      second_child
+
+# --- gaps & padding (tweak to taste) ---
+yabai -m config top_padding           8
+yabai -m config bottom_padding        8
+yabai -m config left_padding          8
+yabai -m config right_padding         8
+yabai -m config window_gap            8
+
+# --- focus behaviour ---
+yabai -m config focus_follows_mouse   autofocus
+yabai -m config mouse_follows_focus   on
+yabai -m config mouse_modifier        alt       # matches your MODKEY
+yabai -m config mouse_action1         move      # alt + left-drag  = move  (dwm movemouse)
+yabai -m config mouse_action2         resize    # alt + right-drag = resize (dwm resizemouse)
+
+# --- apps that should always float (never tile) ---
+yabai -m rule --add app="^System Settings$"  manage=off
+yabai -m rule --add app="^Calculator$"        manage=off
+yabai -m rule --add app="^Finder$" title="Info$" manage=off
+
+# --- features below need SIP partially disabled + the scripting addition ---
+# --- leave commented until you've done that (see notes I gave you) ---
+# yabai -m config window_shadow                float
+# yabai -m config window_opacity               on
+# yabai -m config active_window_opacity        1.0
+# yabai -m config normal_window_opacity        0.90
+
+echo "yabai config loaded"

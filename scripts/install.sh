@@ -179,6 +179,20 @@ create_symlinks() {
         ln -sf "$(pwd)/.gitconfig" ~/.gitconfig
         print_success "Git configuration linked"
     fi
+
+    # yabai + skhd (macOS tiling WM) — only on macOS
+    if [[ "$(uname)" == "Darwin" ]]; then
+        if [[ -f .config/yabai/yabairc ]]; then
+            mkdir -p ~/.config/yabai
+            ln -sf "$(pwd)/.config/yabai/yabairc" ~/.config/yabai/yabairc
+            print_success "yabai configuration linked"
+        fi
+        if [[ -f .config/skhd/skhdrc ]]; then
+            mkdir -p ~/.config/skhd
+            ln -sf "$(pwd)/.config/skhd/skhdrc" ~/.config/skhd/skhdrc
+            print_success "skhd configuration linked"
+        fi
+    fi
 }
 
 # Function to update the system
