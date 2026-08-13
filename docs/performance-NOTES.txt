@@ -1,0 +1,17 @@
+Mac Pro (MacPro6,1) performance tweaks 2026-08-03
+================================================
+Applied:
+- picom: xrender, no shadows/fading
+- tuned: latency-performance (CPU governor=performance)
+- SSD /dev/sda: mq-deadline via udev + live apply
+- Disabled+masked: ModemManager, abrtd (+ abrt helpers disabled)
+- sysctl: vm.swappiness=10, vfs_cache_pressure=50
+- GRUB: mitigations=off (takes effect after reboot)
+
+Still recommended later:
+- Replace APPLE SSD SM0256G with a modern SATA SSD
+- Reboot once to load mitigations=off
+
+Revert mitigations:
+  edit /etc/default/grub, remove mitigations=off, update BLS entries,
+  grub2-mkconfig, reboot

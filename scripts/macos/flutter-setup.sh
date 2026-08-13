@@ -531,58 +531,23 @@ install_ohmyzsh() {
 setup_config_files() {
     print_section "Setting up Configuration Files"
 
-    # Create .config directory if it doesn't exist
-    if ! mkdir -p ~/.config; then
-        print_error "Failed to create ~/.config directory"
+    # The shared configs (vim, nvim, tmux, alacritty) are tracked in this repo
+    # and deployed by the same installer used on Fedora, so both machines run
+    # identical editor and terminal setups. See README.md.
+    local installer
+    installer="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/install.sh"
+
+    if [[ ! -x "$installer" ]]; then
+        print_error "install.sh not found at $installer"
         return 1
     fi
 
-    # Setup Vim configuration
-    if [[ -f ~/.vimrc ]]; then
-        print_warning "~/.vimrc already exists, skipping"
-    else
-        print_status "Creating basic Vim configuration..."
-        local vimrc_file=~/.vimrc
-        if ! cat > "$vimrc_file" << 'EOF'
-" Basic Vim Configuration
-set number              " Show line numbers
-set relativenumber     " Show relative line numbers
-set tabstop=4          " Number of spaces that a <Tab> counts for
-set shiftwidth=4       " Number of spaces for autoindent
-set expandtab          " Use spaces instead of tabs
-set autoindent         " Copy indent from current line
-set smartindent        " Smart autoindenting for C-like languages
-set hlsearch           " Highlight search matches
-set incsearch          " Incremental search
-set ignorecase         " Case insensitive search
-set smartcase          " Case sensitive if uppercase present
-set backspace=indent,eol,start
-set mouse=a            " Enable mouse support
-set termguicolors      " Enable true color support
-set background=dark    " Dark background
-syntax enable          " Enable syntax highlighting
-EOF
-        then
-            print_error "Failed to create Vim configuration"
-            return 1
-        fi
-        print_success "Vim configuration created at ~/.vimrc"
+    print_status "Linking shared dotfiles..."
+    if ! "$installer" --links; then
+        print_error "Failed to link configuration files"
+        return 1
     fi
-
-    # Setup tmux configuration if dotfiles includes it
-    if [[ -f ./.tmux/.tmux.conf ]]; then
-        if [[ -L ~/.tmux.conf ]] || [[ -f ~/.tmux.conf ]]; then
-            print_warning "~/.tmux.conf already exists, skipping"
-        else
-            print_status "Linking tmux configuration..."
-            mkdir -p ~/.tmux
-            if ! ln -sf "$(pwd)/.tmux/.tmux.conf" ~/.tmux.conf; then
-                print_error "Failed to create tmux configuration symlink"
-                return 1
-            fi
-            print_success "tmux configuration linked"
-        fi
-    fi
+    print_success "Shared configuration linked"
 }
 
 # Function to setup shell profile

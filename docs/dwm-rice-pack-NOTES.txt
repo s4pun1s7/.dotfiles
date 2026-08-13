@@ -1,0 +1,20 @@
+dwm rice pack applied (2026-08-03)
+==================================
+Theme: Nord
+Font: JetBrains Mono
+
+New patches: BAR_ALPHA, BAR_UNDERLINETAGS, BAR_PADDING_VANITYGAPS,
+  SCRATCHPADS, PERTAG, PERTAG_VANITYGAPS, FULLSCREEN
+
+Log out and back in to load the new dwm binary.
+
+Keybinds:
+  Mod+`              toggle scratchpad (alacritty --class spterm)
+  Mod+Shift+f        fullscreen (monocle + hide bar)
+  Mod+n              alternative tags
+  Mod+Shift+j/k      movestack
+  Mod+Alt+u          gaps
+
+Autostart now: picom (config), nm-applet, guake, slstatus
+Configs: ~/.config/picom/picom.conf, ~/.config/dunst/dunstrc,
+  ~/.config/alacritty/alacritty.toml (Nord)

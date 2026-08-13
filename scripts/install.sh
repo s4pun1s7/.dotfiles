@@ -1,7 +1,15 @@
 #!/bin/bash
 
 # Dotfiles Install Script
-# This script installs and updates all components of the dotfiles
+#
+# Deploys the tracked configs as symlinks and, on Linux, builds the suckless
+# tools. Configs are split into three sets:
+#
+#   shared  - works on both Fedora and macOS (editor, tmux, alacritty)
+#   linux   - X11 rice: dwm, dunst, picom, guake, tray applets
+#   macos   - anything mac specific
+#
+# See README.md for the repo layout and THEME.md for the shared palette.
 
 set -e  # Exit on any error
 
@@ -12,7 +20,6 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Function to print colored output
 print_status() {
     echo -e "${BLUE}[INFO]${NC} $1"
 }
@@ -29,12 +36,38 @@ print_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
-# Function to check if a command exists
+DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+
+case "$(uname -s)" in
+    Linux)  OS=linux ;;
+    Darwin) OS=macos ;;
+    *)      OS=unknown ;;
+esac
+
+# Symlink tables: "source-in-repo:target-in-home"
+LINKS_SHARED=(
+    "home/.vimrc:$HOME/.vimrc"
+    "config/nvim/init.vim:$CONFIG_HOME/nvim/init.vim"
+    "config/tmux:$CONFIG_HOME/tmux"
+    "config/alacritty:$CONFIG_HOME/alacritty"
+)
+
+LINKS_LINUX=(
+    "config/dunst:$CONFIG_HOME/dunst"
+    "config/picom:$CONFIG_HOME/picom"
+    "config/flameshot:$CONFIG_HOME/flameshot"
+    "config/volumeicon:$CONFIG_HOME/volumeicon"
+    "config/htop:$CONFIG_HOME/htop"
+    "config/Thunar:$CONFIG_HOME/Thunar"
+)
+
+LINKS_MACOS=()
+
 command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Function to check if we're running as root
 check_root() {
     if [[ $EUID -eq 0 ]]; then
         print_error "This script should not be run as root"
@@ -42,182 +75,159 @@ check_root() {
     fi
 }
 
-# Function to install dependencies
+# Link one repo path into place, backing up whatever is already there
+link_one() {
+    local src="$DOTFILES/$1"
+    local dest="$2"
+
+    if [[ ! -e "$src" ]]; then
+        print_warning "Missing in repo, skipping: $1"
+        return
+    fi
+
+    # Already pointing at the right place
+    if [[ "$(readlink "$dest" 2>/dev/null)" == "$src" ]]; then
+        return
+    fi
+
+    mkdir -p "$(dirname "$dest")"
+
+    if [[ -e "$dest" || -L "$dest" ]]; then
+        if [[ -L "$dest" ]]; then
+            rm -f "$dest"
+        else
+            mv "$dest" "$dest.backup-$(date +%Y%m%d%H%M%S)"
+            print_warning "Backed up existing $dest"
+        fi
+    fi
+
+    ln -s "$src" "$dest"
+    print_success "Linked $1 -> $dest"
+}
+
+link_configs() {
+    print_status "Linking shared configs..."
+    for entry in "${LINKS_SHARED[@]}"; do
+        link_one "${entry%%:*}" "${entry#*:}"
+    done
+
+    if [[ "$OS" == linux ]]; then
+        print_status "Linking Linux configs..."
+        for entry in "${LINKS_LINUX[@]}"; do
+            link_one "${entry%%:*}" "${entry#*:}"
+        done
+    elif [[ "$OS" == macos && ${#LINKS_MACOS[@]} -gt 0 ]]; then
+        print_status "Linking macOS configs..."
+        for entry in "${LINKS_MACOS[@]}"; do
+            link_one "${entry%%:*}" "${entry#*:}"
+        done
+    fi
+}
+
+# Guake keeps its settings in dconf, not in a config file
+setup_guake() {
+    [[ "$OS" == linux ]] || return 0
+
+    if command_exists dconf && command_exists guake; then
+        print_status "Applying guake settings..."
+        "$DOTFILES/guake/apply.sh"
+    else
+        print_warning "guake or dconf not installed, skipping guake settings"
+    fi
+}
+
+# dwm's autostart patch runs this on session start
+setup_autostart() {
+    [[ "$OS" == linux ]] || return 0
+
+    print_status "Setting up dwm autostart..."
+    mkdir -p "$HOME/.local/share/dwm"
+    link_one "scripts/autostart.sh" "$HOME/.local/share/dwm/autostart.sh"
+}
+
 install_dependencies() {
+    if [[ "$OS" != linux ]]; then
+        print_warning "Dependency install only covers Fedora, skipping"
+        return 0
+    fi
+
     print_status "Checking and installing dependencies..."
-    
-    # Check for required packages
+
     local missing_packages=()
-    
-    # Build tools
-    if ! command_exists make; then
-        missing_packages+=("build-essential")
-    fi
-    
-    if ! command_exists gcc; then
-        missing_packages+=("gcc")
-    fi
-    
-    # X11 development
-    if ! pkg-config --exists x11 2>/dev/null; then
-        missing_packages+=("libx11-dev")
-    fi
-    
-    if ! pkg-config --exists xft 2>/dev/null; then
-        missing_packages+=("libxft-dev")
-    fi
-    
-    if ! pkg-config --exists xinerama 2>/dev/null; then
-        missing_packages+=("libxinerama-dev")
-    fi
-    
-    # Fontconfig
-    if ! pkg-config --exists fontconfig 2>/dev/null; then
-        missing_packages+=("libfontconfig1-dev")
-    fi
-    
-    # Install missing packages
+
+    command_exists make || missing_packages+=("make")
+    command_exists gcc || missing_packages+=("gcc")
+    pkg-config --exists x11 2>/dev/null || missing_packages+=("libX11-devel")
+    pkg-config --exists xft 2>/dev/null || missing_packages+=("libXft-devel")
+    pkg-config --exists xinerama 2>/dev/null || missing_packages+=("libXinerama-devel")
+    pkg-config --exists fontconfig 2>/dev/null || missing_packages+=("fontconfig-devel")
+
     if [[ ${#missing_packages[@]} -gt 0 ]]; then
         print_status "Installing missing packages: ${missing_packages[*]}"
-        sudo dnf update
         sudo dnf install -y "${missing_packages[@]}"
     else
         print_success "All dependencies are already installed"
     fi
 }
 
-# Function to build and install a component
 build_component() {
     local component=$1
-    local component_dir=$2
-    
+
     print_status "Building $component..."
-    
-    if [[ ! -d "$component_dir" ]]; then
-        print_error "$component directory not found"
+
+    if [[ ! -d "$DOTFILES/$component" ]]; then
+        print_warning "$component directory not found, skipping"
+        return 0
+    fi
+
+    (
+        cd "$DOTFILES/$component"
+        make clean >/dev/null 2>&1 || true
+        make -j"$(nproc)"
+        sudo make install
+    ) || {
+        print_error "Failed to build or install $component"
         return 1
-    fi
-    
-    cd "$component_dir"
-    
-    # Clean previous builds
-    if [[ -f Makefile ]]; then
-        make clean 2>/dev/null || true
-    fi
-    
-    # Build
-    if make -j$(nproc); then
-        print_success "$component built successfully"
-        
-        # Install
-        if sudo make install; then
-            print_success "$component installed successfully"
-        else
-            print_error "Failed to install $component"
-            return 1
-        fi
-    else
-        print_error "Failed to build $component"
-        return 1
-    fi
-    
-    cd - >/dev/null
+    }
+
+    print_success "$component installed"
 }
 
-# Function to setup tmux configuration
-setup_tmux() {
-    print_status "Setting up tmux configuration..."
-    
-    # Create tmux config directory if it doesn't exist
-    mkdir -p ~/.tmux
-    
-    # Copy tmux configuration
-    if [[ -f .tmux/.tmux.conf ]]; then
-        cp .tmux/.tmux.conf ~/.tmux/
-        print_success "Tmux configuration copied"
-    else
-        print_warning "Tmux configuration not found"
+build_suckless() {
+    if [[ "$OS" != linux ]]; then
+        print_warning "Suckless tools are Linux only, skipping build"
+        return 0
     fi
-    
-    # Copy tmux scripts
-    if [[ -f scripts/bat.sh ]]; then
-        cp scripts/bat.sh ~/.tmux/
-        chmod +x ~/.tmux/bat.sh
-        print_success "Tmux scripts copied"
-    fi
+
+    for component in dwm st slstatus; do
+        build_component "$component"
+    done
+
+    print_status "Installing start-dwm session wrapper..."
+    sudo install -m 755 "$DOTFILES/scripts/start-dwm.sh" /usr/local/bin/start-dwm
+    print_success "start-dwm installed"
 }
 
-# Function to setup autostart script
-setup_autostart() {
-    print_status "Setting up autostart script..."
-    
-    # Create autostart directory if it doesn't exist
-    mkdir -p ~/.config/autostart
-    
-    # Copy autostart script
-    if [[ -f scripts/autostart.sh ]]; then
-        cp scripts/autostart.sh ~/.config/autostart/
-        chmod +x ~/.config/autostart/autostart.sh
-        print_success "Autostart script copied"
-    else
-        print_warning "Autostart script not found"
-    fi
-}
-
-# Function to create symlinks for configuration files
-create_symlinks() {
-    print_status "Creating configuration symlinks..."
-    
-    # Vim configuration
-    if [[ -f .vimrc ]]; then
-        ln -sf "$(pwd)/.vimrc" ~/.vimrc
-        print_success "Vim configuration linked"
-    fi
-    
-    # Git configuration (if exists)
-    if [[ -f .gitconfig ]]; then
-        ln -sf "$(pwd)/.gitconfig" ~/.gitconfig
-        print_success "Git configuration linked"
-    fi
-}
-
-# Function to update the system
 update_system() {
+    if [[ "$OS" != linux ]]; then
+        print_warning "System update only covers Fedora, skipping"
+        return 0
+    fi
     print_status "Updating system packages..."
-    sudo dnf update
     sudo dnf upgrade -y
     print_success "System updated"
 }
 
-# Function to clean up old builds
 cleanup() {
     print_status "Cleaning up build artifacts..."
-    
-    # Clean dwm
-    if [[ -d dwm ]]; then
-        cd dwm
-        make clean 2>/dev/null || true
-        cd - >/dev/null
-    fi
-    
-    # Clean st
-    if [[ -d st ]]; then
-        cd st
-        make clean 2>/dev/null || true
-        cd - >/dev/null
-    fi
-    
-    # Clean slstatus
-    if [[ -d slstatus ]]; then
-        cd slstatus
-        make clean 2>/dev/null || true
-        cd - >/dev/null
-    fi
-    
+    for component in dwm st slstatus; do
+        if [[ -d "$DOTFILES/$component" ]]; then
+            (cd "$DOTFILES/$component" && make clean >/dev/null 2>&1) || true
+        fi
+    done
     print_success "Cleanup completed"
 }
 
-# Function to show usage
 show_usage() {
     echo "Usage: $0 [OPTIONS]"
     echo ""
@@ -226,57 +236,30 @@ show_usage() {
     echo "  -u, --update        Update system packages first"
     echo "  -c, --clean         Clean build artifacts before building"
     echo "  -d, --dependencies  Install dependencies only"
-    echo "  -t, --tmux          Setup tmux configuration only"
-    echo "  -a, --autostart     Setup autostart script only"
-    echo "  -s, --symlinks      Create configuration symlinks only"
+    echo "  -l, --links         Link configuration files only"
+    echo "  -b, --build         Build and install suckless tools only"
     echo ""
     echo "Examples:"
     echo "  $0                  # Full installation"
-    echo "  $0 -u               # Update system and install"
-    echo "  $0 -c               # Clean and install"
-    echo "  $0 -d               # Install dependencies only"
+    echo "  $0 -l               # Re-link configs after moving files around"
+    echo "  $0 -b               # Rebuild dwm/st/slstatus after a config change"
 }
 
-# Main function
 main() {
     local update_system_flag=false
     local clean_flag=false
     local dependencies_only=false
-    local tmux_only=false
-    local autostart_only=false
-    local symlinks_only=false
-    
-    # Parse command line arguments
+    local links_only=false
+    local build_only=false
+
     while [[ $# -gt 0 ]]; do
         case $1 in
-            -h|--help)
-                show_usage
-                exit 0
-                ;;
-            -u|--update)
-                update_system_flag=true
-                shift
-                ;;
-            -c|--clean)
-                clean_flag=true
-                shift
-                ;;
-            -d|--dependencies)
-                dependencies_only=true
-                shift
-                ;;
-            -t|--tmux)
-                tmux_only=true
-                shift
-                ;;
-            -a|--autostart)
-                autostart_only=true
-                shift
-                ;;
-            -s|--symlinks)
-                symlinks_only=true
-                shift
-                ;;
+            -h|--help)         show_usage; exit 0 ;;
+            -u|--update)       update_system_flag=true; shift ;;
+            -c|--clean)        clean_flag=true; shift ;;
+            -d|--dependencies) dependencies_only=true; shift ;;
+            -l|--links)        links_only=true; shift ;;
+            -b|--build)        build_only=true; shift ;;
             *)
                 print_error "Unknown option: $1"
                 show_usage
@@ -284,88 +267,51 @@ main() {
                 ;;
         esac
     done
-    
-    print_status "Starting dotfiles installation..."
-    
-    # Check if not running as root
+
     check_root
-    
-    # Update system if requested
+    print_status "Installing dotfiles for $OS from $DOTFILES"
+
+    if [[ "$OS" == unknown ]]; then
+        print_error "Unsupported platform: $(uname -s)"
+        exit 1
+    fi
+
+    if [[ "$links_only" == true ]]; then
+        link_configs
+        setup_guake
+        setup_autostart
+        print_success "Configuration linked"
+        exit 0
+    fi
+
     if [[ "$update_system_flag" == true ]]; then
         update_system
     fi
-    
-    # Install dependencies
+
     install_dependencies
-    
-    # Exit if only dependencies were requested
+
     if [[ "$dependencies_only" == true ]]; then
         print_success "Dependencies installation completed"
         exit 0
     fi
-    
-    # Clean if requested
+
     if [[ "$clean_flag" == true ]]; then
         cleanup
     fi
-    
-    # Setup tmux only if requested
-    if [[ "$tmux_only" == true ]]; then
-        setup_tmux
-        print_success "Tmux setup completed"
+
+    if [[ "$build_only" == true ]]; then
+        build_suckless
+        print_success "Build completed"
         exit 0
     fi
-    
-    # Setup autostart only if requested
-    if [[ "$autostart_only" == true ]]; then
-        setup_autostart
-        print_success "Autostart setup completed"
-        exit 0
-    fi
-    
-    # Create symlinks only if requested
-    if [[ "$symlinks_only" == true ]]; then
-        create_symlinks
-        print_success "Symlinks creation completed"
-        exit 0
-    fi
-    
-    # Full installation
-    print_status "Building and installing components..."
-    
-    # Build and install dwm
-    if [[ -d dwm ]]; then
-        build_component "dwm" "dwm"
-    else
-        print_warning "dwm directory not found, skipping"
-    fi
-    
-    # Build and install st
-    if [[ -d st ]]; then
-        build_component "st" "st"
-    else
-        print_warning "st directory not found, skipping"
-    fi
-    
-    # Build and install slstatus
-    if [[ -d slstatus ]]; then
-        build_component "slstatus" "slstatus"
-    else
-        print_warning "slstatus directory not found, skipping"
-    fi
-    
-    # Setup tmux configuration
-    setup_tmux
-    
-    # Setup autostart script
+
+    build_suckless
+    link_configs
+    setup_guake
     setup_autostart
-    
-    # Create symlinks
-    create_symlinks
-    
+
     print_success "Installation completed successfully!"
-    print_status "You may need to restart your session or run 'killall dwm' to see changes"
+    print_status "Log out and back into the dwm session to pick up a new dwm build"
 }
 
-# Run main function with all arguments
-main "$@" 
+main "$@"

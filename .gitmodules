@@ -1,9 +1,12 @@
 [submodule "dwm"]
 	path = dwm
 	url = https://github.com/s4pun1s7/dwm.git
+	branch = flexipatch
 [submodule "st"]
 	path = st
 	url = https://github.com/s4pun1s7/st.git
+	branch = main
 [submodule "slstatus"]
 	path = slstatus
 	url = https://github.com/s4pun1s7/slstatus.git
+	branch = main

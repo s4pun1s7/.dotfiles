@@ -1,0 +1,21 @@
+dwm flexipatch upgrade (2026-08-03)
+===================================
+- Branch: dwm/flexipatch (from bakkeby/dwm-flexipatch @ 4c963b3, version 6.8)
+- Old 6.3 history remains on branch main
+- Pre-flexipatch config backup: dwm-config.def.h.pre-flexipatch
+
+Enabled patches:
+  BAR_ALTERNATIVE_TAGS, BAR_SYSTRAY, BAR_HIDEVACANTTAGS, BAR_STATUSALLMONS,
+  VANITYGAPS, ATTACHBELOW, MOVESTACK, RESTARTSIG, LOSEFULLSCREEN, CENTEREDMASTER
+
+Apply: log out and back into the dwm session (current lightdm session still runs old dwm).
+
+Afterwards:
+  Mod+Shift+c     quit dwm (start-dwm loop restarts it)
+  Mod+Ctrl+Shift+q  restart via RESTARTSIG (quit with restart arg)
+  Mod+n           alternative tags
+  Mod+Shift+j/k   movestack
+  Mod+Alt+u       incrgaps / Mod+Alt+Shift+u decrgaps
+  Mod+Return      alacritty
+  Print           flameshot
+  XF86 volume     wpctl
