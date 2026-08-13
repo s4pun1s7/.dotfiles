@@ -62,7 +62,11 @@ LINKS_LINUX=(
     "config/Thunar:$CONFIG_HOME/Thunar"
 )
 
-LINKS_MACOS=()
+# yabai + skhd give macOS dwm-style tiling on the Alt modkey
+LINKS_MACOS=(
+    "config/yabai:$CONFIG_HOME/yabai"
+    "config/skhd:$CONFIG_HOME/skhd"
+)
 
 command_exists() {
     command -v "$1" >/dev/null 2>&1

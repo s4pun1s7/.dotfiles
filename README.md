@@ -47,11 +47,15 @@ It detects the platform and links accordingly:
 | ------ | -------------------------------------------------------------- |
 | shared | vim, nvim, tmux, alacritty                                     |
 | linux  | dunst, picom, flameshot, volumeicon, htop, Thunar, guake, dwm autostart |
-| macos  | (none yet - add to `LINKS_MACOS` in `scripts/install.sh`)      |
+| macos  | yabai, skhd                                                    |
 
 The mac Flutter setup (`scripts/macos/flutter-setup.sh`) calls
 `install.sh --links` for the shared set, so both machines get the same editor
 and terminal config from one source.
+
+On the Mac, yabai + skhd reproduce the dwm keymap on the Alt modkey
+(`config/skhd/skhdrc`), which is why tmux uses Ctrl+hjkl for pane
+navigation on both machines rather than Alt.
 
 ## What runs the desktop
 
