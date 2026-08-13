@@ -1,0 +1,31 @@
+# Nord-ish fallback palette, matching dwm/config.def.h and config/dunst/dunstrc.
+# Imported first by alacritty.toml; pywal's generated palette is imported after
+# and wins where it exists. This is what the Mac and a fresh box get.
+
+[colors.primary]
+background = "#14171E"
+foreground = "#C8D0DC"
+
+[colors.normal]
+black = "#1C212B"
+red = "#BF616A"
+green = "#A3BE8C"
+yellow = "#EBCB8B"
+blue = "#81A1C1"
+magenta = "#B48EAD"
+cyan = "#88C0D0"
+white = "#E5E9F0"
+
+[colors.bright]
+black = "#2A303C"
+red = "#BF616A"
+green = "#A3BE8C"
+yellow = "#EBCB8B"
+blue = "#81A1C1"
+magenta = "#B48EAD"
+cyan = "#8FBCBB"
+white = "#D8DEE9"
+
+[colors.cursor]
+text = "#14171E"
+cursor = "#C8D0DC"

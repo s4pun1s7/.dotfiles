@@ -1,34 +1,15 @@
+# Imports load in order and the importing file loads LAST, so colours must not
+# live in this file or they would beat the imports. Nord is the fallback;
+# pywal's wallpaper-derived palette is imported after it and wins when present.
+# Missing imports are skipped silently. See scripts/setwallpaper.sh.
+general.import = [
+    "colors-nord.toml",
+    "~/.cache/wal/colors-alacritty.toml",
+]
+
 [font]
 normal = { family = "JetBrains Mono", style = "Regular" }
 size = 11.0
-
-[colors.primary]
-background = "#14171E"
-foreground = "#C8D0DC"
-
-[colors.normal]
-black = "#1C212B"
-red = "#BF616A"
-green = "#A3BE8C"
-yellow = "#EBCB8B"
-blue = "#81A1C1"
-magenta = "#B48EAD"
-cyan = "#88C0D0"
-white = "#E5E9F0"
-
-[colors.bright]
-black = "#2A303C"
-red = "#BF616A"
-green = "#A3BE8C"
-yellow = "#EBCB8B"
-blue = "#81A1C1"
-magenta = "#B48EAD"
-cyan = "#8FBCBB"
-white = "#D8DEE9"
-
-[colors.cursor]
-text = "#14171E"
-cursor = "#C8D0DC"
 
 [[keyboard.bindings]]
 key = "Return"

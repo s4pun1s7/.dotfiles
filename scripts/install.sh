@@ -60,6 +60,8 @@ LINKS_LINUX=(
     "config/volumeicon:$CONFIG_HOME/volumeicon"
     "config/htop:$CONFIG_HOME/htop"
     "config/Thunar:$CONFIG_HOME/Thunar"
+    # pywal templates; rendered into ~/.cache/wal by scripts/setwallpaper.sh
+    "config/wal:$CONFIG_HOME/wal"
 )
 
 # yabai + skhd give macOS dwm-style tiling on the Alt modkey
@@ -187,6 +189,11 @@ build_component() {
     (
         cd "$DOTFILES/$component"
         make clean >/dev/null 2>&1 || true
+        # The tracked source of truth is config.def.h / patches.def.h; the
+        # generated headers are gitignored. suckless Makefiles only copy them
+        # when missing, and dwm's `clean` leaves them behind, so a rebuild
+        # after editing a .def.h would silently keep the old settings.
+        rm -f config.h patches.h
         make -j"$(nproc)"
         sudo make install
     ) || {

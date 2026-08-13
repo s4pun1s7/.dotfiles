@@ -1,0 +1,3 @@
+# scripts/setwallpaper.sh links the pywal-generated drop-in in here as
+# 50-wal.conf, pointing at ~/.cache/wal/colors-dunst.conf. Generated, not tracked.
+50-wal.conf
