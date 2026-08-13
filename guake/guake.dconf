@@ -1,0 +1,16 @@
+[general]
+fullscreen-hide-tabbar=true
+gtk-prefer-dark-theme=true
+toolbar-visible-in-fullscreen=false
+use-default-font=false
+use-scrollbar=false
+window-tabbar=false
+
+[style/background]
+transparency=92
+
+[style/font]
+bold-is-bright=true
+palette='#1C1C21212B2B:#BFBF61616A6A:#A3A3BEBE8C8C:#EBEBCBCB8B8B:#8181A1A1C1C1:#B4B48E8EADAD:#8888C0C0D0D0:#E5E5E9E9F0F0:#2A2A30303C3C:#BFBF61616A6A:#A3A3BEBE8C8C:#EBEBCBCB8B8B:#8181A1A1C1C1:#B4B48E8EADAD:#8F8FBCBCBBBB:#D8D8DEDEE9E9:#C8C8D0D0DCDC:#141417171E1E'
+palette-name='Nord (dwm rice)'
+style='JetBrains Mono 10'
