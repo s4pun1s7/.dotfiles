@@ -42,5 +42,9 @@ for prog in nm-applet slstatus; do
 	done
 done
 
+# Seed DDC brightness cache in the background (ddcutil is too slow to query
+# from slstatus every second). brightness.sh get reads the cache.
+"$SCRIPTS_DIR/brightness.sh" sync &
+
 nm-applet &
 slstatus &

@@ -18,4 +18,5 @@ Afterwards:
   Mod+Alt+u       incrgaps / Mod+Alt+Shift+u decrgaps
   Mod+Return      alacritty
   Print           flameshot
-  XF86 volume     wpctl
+  XF86 volume     wpctl (also scroll/click status bar)
+  brightness      Mod+scroll on status bar (ddcutil via scripts/brightness.sh)
